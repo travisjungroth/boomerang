@@ -7,8 +7,7 @@ import requests
 
 gist = requests.get(environ['GIST_URL']).json()
 for link in gist:
-    start_split = [int(x) for x in link['date'].split('/')]
-    start = date(month=start_split[0], day=start_split[1], year=start_split[2])
+    start = datetime.strptime(link['date'], '%m/%d/%Y').date()
     spaces = [7, 14, 28, 56, 112, 224, 364, 364, 364, 364, 364, 364]
     reread_dates = {start + timedelta(days=d) for d in spaces}
     if datetime.today().date() in reread_dates:
