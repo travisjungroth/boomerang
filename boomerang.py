@@ -1,6 +1,6 @@
 import json
 import uuid
-from datetime import date, timedelta, datetime
+from datetime import datetime, timedelta
 from os import environ
 
 import requests
