@@ -5,6 +5,16 @@ from os import environ
 
 import requests
 
+
+def headers():
+    return {
+        'Content-Type': 'application/json',
+        'X-Request-Id': str(uuid.uuid4()),
+        'Authorization': f'Bearer {environ["TODOIST_TOKEN"]}'
+    }
+
+
+# Re-add online articles
 gist = requests.get(environ['GIST_URL']).json()
 for link in gist:
     start = datetime.strptime(link['date'], '%m/%d/%Y').date()
@@ -16,8 +26,20 @@ for link in gist:
             data=json.dumps({
                 'content': f'Reread [{link["title"]}]({link["url"]})',
             }),
-            headers={
-                'Content-Type': 'application/json',
-                'X-Request-Id': str(uuid.uuid4()),
-                'Authorization': f'Bearer {environ["TODOIST_TOKEN"]}'
-            })
+            headers=headers())
+
+
+# Refresh habits
+r = requests.get(
+    'https://api.todoist.com/rest/v1/tasks',
+    params={
+        'filter': 'overdue & #habits',
+    },
+    headers=headers())
+for task in r.json():
+    requests.post(
+        f"https://api.todoist.com/rest/v1/tasks/{task['id']}",
+        data=json.dumps({
+            'due_string': task['due']['string']
+        }),
+        headers=headers())
