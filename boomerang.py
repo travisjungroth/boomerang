@@ -33,13 +33,14 @@ for link in gist:
 r = requests.get(
     'https://api.todoist.com/rest/v1/tasks',
     params={
-        'filter': 'overdue & #habits',
+        'filter': 'overdue & #habits & !@noskip',
     },
     headers=headers())
-for task in r.json():
+tasks = r.json()
+for task in tasks:
     requests.post(
         f"https://api.todoist.com/rest/v1/tasks/{task['id']}",
         data=json.dumps({
-            'due_string': task['due']['string']
+            'due_string': f"{task['due']['string']} starting today"
         }),
         headers=headers())
