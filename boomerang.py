@@ -1,9 +1,10 @@
 import json
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from os import environ
 
 import requests
+from todoist import TodoistAPI
 
 
 def headers():
@@ -28,7 +29,6 @@ for link in gist:
             }),
             headers=headers())
 
-
 # Refresh habits
 r = requests.get(
     'https://api.todoist.com/rest/v1/tasks',
@@ -44,3 +44,39 @@ for task in tasks:
             'due_string': f"{task['due']['string']} starting today"
         }),
         headers=headers())
+
+# Daily sort
+
+api = TodoistAPI(environ["TODOIST_TOKEN"])
+api.sync()
+today = str(date.today())
+task_ids_today = [task['id'] for task in api['items'] if task['due'] is not None and task['due']['date'] == today]
+morning = [
+    3571827834,  # Take breakfast vitamins
+    3603880549,  # Plan day
+]
+afternoon = [
+    3575657684,  # Shutdown ritual
+    3564394650,  # Record in my voice journal
+    3632277292,  # Say three things I’m grateful for
+    3564393963,  # Meditate for 20 minutes
+    3564404683,  # Work out
+    3997794211,  # Half hour of Spanish Pimsleur
+    3922955288,  # Take melatonin
+    3646525046,  # Put phone away
+]
+
+
+def key(id_: int):
+    if id_ in morning:
+        return morning.index(id_) - len(morning)
+    elif id_ in afternoon:
+        return afternoon.index(id_) + 1
+    else:
+        return 0
+
+
+task_ids_today.sort(key=key)
+ids_to_orders = {id_: i for i, id_ in enumerate(task_ids_today)}
+api.items.update_day_orders(ids_to_orders)
+api.commit()
