@@ -46,7 +46,6 @@ for task in tasks:
         headers=headers())
 
 # Daily sort
-
 api = TodoistAPI(environ["TODOIST_TOKEN"])
 api.sync()
 today = str(date.today())
@@ -57,12 +56,12 @@ morning = [
 ]
 afternoon = [
     3575657684,  # Shutdown ritual
-    3564394650,  # Record in my voice journal
     3632277292,  # Say three things I’m grateful for
+    3564394650,  # Record in my voice journal
     3564393963,  # Meditate for 20 minutes
-    3564404683,  # Work out
-    3997794211,  # Half hour of Spanish Pimsleur
-    3922955288,  # Take melatonin
+    3564404683,  # Bodyweight workout
+    3997794211,  # Roll and Spanish
+    3922955288,  # Take night vitamins
     3646525046,  # Put phone away
 ]
 
