@@ -53,9 +53,9 @@ task_ids_today = [task['id'] for task in api['items'] if task['due'] is not None
 morning = [
     3571827834,  # Take breakfast vitamins
     3603880549,  # Plan day
+    3575657684,  # Shutdown ritual
 ]
 afternoon = [
-    3575657684,  # Shutdown ritual
     3632277292,  # Say three things I’m grateful for
     3564394650,  # Record in my voice journal
     3564393963,  # Meditate for 20 minutes
