@@ -38,10 +38,12 @@ r = requests.get(
     headers=headers())
 tasks = r.json()
 for task in tasks:
+    due_string = task['due']['string']
+    due_string = due_string if due_string.endswith(' starting today') else f'{due_string} starting today'
     requests.post(
         f"https://api.todoist.com/rest/v1/tasks/{task['id']}",
         data=json.dumps({
-            'due_string': f"{task['due']['string']} starting today"
+            'due_string': due_string
         }),
         headers=headers())
 
@@ -54,16 +56,18 @@ morning = [
     3571827834,  # Take breakfast vitamins
     3603880549,  # Plan day
     3632277292,  # Say three things I’m grateful for
-    3564394650,  # Record in my voice journal
-    3575657684,  # Shutdown ritual
+    # 3564394650,  # Record in my voice journal
 ]
 afternoon = [
-    3564393963,  # Meditate for 20 minutes
+    3564393963,  # Meditate for 10 minutes
     3564404683,  # Bodyweight workout
-    3997794211,  # Roll and Spanish
-    4013318231,  # Log habits
+    3575657684,  # Shutdown ritual
+    # 3997794211,  # Roll and Spanish
     3922955288,  # Take night vitamins
+    4103403945,  # Make sure phone VPN is on
+    4013318231,  # Log habits
     3646525046,  # Put phone away
+    4088458451,  # Put in braces
 ]
 
 
