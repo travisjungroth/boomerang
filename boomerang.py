@@ -1,10 +1,9 @@
+from datetime import datetime, timedelta
 import json
-import uuid
-from datetime import datetime, timedelta, date
 from os import environ
+import uuid
 
 import requests
-from todoist import TodoistAPI
 
 
 def headers():
@@ -24,7 +23,10 @@ for link in gist:
     if datetime.today().date() in reread_dates:
         r = requests.post(
             'https://api.todoist.com/rest/v1/tasks',
-            data=json.dumps({
-                'content': f'Reread [{link["title"]}]({link["url"]})',
-            }),
-            headers=headers())
+            data=json.dumps(
+                {
+                    'content': f'Reread [{link["title"]}]({link["url"]})',
+                }
+            ),
+            headers=headers()
+        )
