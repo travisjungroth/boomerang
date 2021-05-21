@@ -18,7 +18,7 @@ def headers():
 gist = requests.get(environ['GIST_URL']).json()
 for link in gist:
     start = datetime.strptime(link['date'], '%m/%d/%Y').date()
-    spaces = [7, 14, 28, 56, 112, 224, 364, 364, 364, 364, 364, 364]
+    spaces = [7, 28, 91, 182, 364, 364, 364, 364, 364, 364]
     reread_dates = {start + timedelta(days=d) for d in spaces}
     if datetime.today().date() in reread_dates:
         r = requests.post(
